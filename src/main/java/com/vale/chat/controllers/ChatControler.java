@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 
 import com.vale.chat.documents.Mensaje;
 import com.vale.chat.services.ChatService;
+import com.vale.chat.services.NotificacionService;
 
 @Controller
 public class ChatControler {
@@ -18,8 +19,9 @@ public class ChatControler {
 	public static String MENSAJE = "MENSAJE";
 	private String[] colores = {"red", "green", "blue", "magenta", "purple", "orange"};
 	
-	@Autowired 	ChatService chatService;
+	@Autowired ChatService chatService;
 	@Autowired SimpMessagingTemplate webSocket;	
+	@Autowired NotificacionService notificacionService;
 	
 	@MessageMapping("/mensaje")
 	@SendTo("/chat/mensaje") // aca hay que suscribirse
@@ -50,6 +52,13 @@ public class ChatControler {
 	public void  getHistorial( String usuarioID ) {
 		// Es lo mismo que el sendTo
 		webSocket.convertAndSend("/chat/historial/"+ usuarioID, chatService.getHistorial());		
+	}
+	
+	
+	@MessageMapping("/notificaciones")
+	public void getNofificaciones( String username ) {
+		webSocket.convertAndSend("/chat/notificaciones/"+ username, notificacionService.findByUsername(username));		
+		
 	}
 
 }
