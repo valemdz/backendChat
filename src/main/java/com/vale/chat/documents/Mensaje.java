@@ -67,6 +67,14 @@ public class Mensaje implements Serializable{
 		this.id = id;
 	}
 
+	
+
+	@Override
+	public String toString() {
+		return "Mensaje [id=" + id + ", texto=" + texto + ", fecha=" + fecha + ", username=" + username + ", color="
+				+ color + ", tipo=" + tipo + "]";
+	}
+
 
 
 	private static final long serialVersionUID = 4841854728696606466L;

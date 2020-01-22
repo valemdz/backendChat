@@ -1,42 +1,54 @@
 package com.vale.chat.components;
 
-import java.net.URI;
-import java.util.Collections;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Component
 public class WebClientChat {
 
-	WebClient clientChat;
+	/*WebClient webClient;
 	
 	public WebClient getInstanceClienteChat(){
 		
-		if( clientChat == null ) {
-			clientChat = WebClient
+		if( webClient == null ) {
+			webClient = WebClient
 						  .builder()
-						    .baseUrl("http://localhost:8080")
-						    .defaultCookie("cookieKey", "cookieValue")
-						    .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE) 
-						    .defaultUriVariables(Collections.singletonMap("url", "http://localhost:8080"))
+						  .baseUrl("http://localhost:8080")						    
+						  .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)						    
 						  .build();			
 		}
 		
-		return clientChat;
-	}
+		return webClient;
+	}*/
 	
 	public void publishNotificacion( String username) {
 		
-		/*WebClient.RequestHeadersSpec requestSpec1 = clientChat
-				  .post()
-				  .uri("/resource")
-				  .body(BodyInserters.fromPublisher(Mono.just( username )), String.class);*/
+	
+		WebClient webClient = WebClient
+				  .builder()
+				  .baseUrl("http://localhost:8080")						    
+				  .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)						    
+				  .build();			
+	
+		
+		String urlFinal = "/app/notificaciones/VTORRES";			
+		
+		
+		BodyInserters.fromPublisher(Flux.just("VTORRES"),String.class);
+		Mono<String> respuesta1 = webClient.post().uri(urlFinal).body(BodyInserters.fromObject("VTORRES")).exchange()
+			.flatMap( x -> 
+			{ 
+				if ( ! x.statusCode().is2xxSuccessful())
+					return 	Mono.just( urlFinal+" Called. Error 4xx: "+x.statusCode()+"\n");
+				return x.bodyToMono(String.class);
+			});	    	
+				
 		
 	}		
 	

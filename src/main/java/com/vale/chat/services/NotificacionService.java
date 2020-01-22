@@ -27,4 +27,9 @@ public class NotificacionService {
 		return notiRepository.findByUsername( username );
 	}
 	
+	@Transactional( readOnly = true )
+	public List<Notificacion> findAllNotificaciones() {
+		return notiRepository.findAll();
+	}
+	
 }

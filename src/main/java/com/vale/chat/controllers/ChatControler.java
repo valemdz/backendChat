@@ -2,6 +2,9 @@ package com.vale.chat.controllers;
 
 
 import java.util.Random;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -14,6 +17,8 @@ import com.vale.chat.services.NotificacionService;
 
 @Controller
 public class ChatControler {
+	
+	private static final Logger logger = LoggerFactory.getLogger(ChatControler.class);
 	
 	public static String NUEVO_USUARIO = "NUEVO_USUARIO";
 	public static String MENSAJE = "MENSAJE";
@@ -37,6 +42,8 @@ public class ChatControler {
 		
 		chatService.saveMensaje( mensaje );
 		
+		logger.info(mensaje.toString());
+		
 		return mensaje; 
 	}
 	
@@ -57,6 +64,9 @@ public class ChatControler {
 	
 	@MessageMapping("/notificaciones")
 	public void getNofificaciones( String username ) {
+		
+		logger.info("llamada " + "/chat/notificaciones/"+ username );
+		
 		webSocket.convertAndSend("/chat/notificaciones/"+ username, notificacionService.findByUsername(username));		
 		
 	}

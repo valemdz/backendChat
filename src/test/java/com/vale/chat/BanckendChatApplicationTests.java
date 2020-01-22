@@ -12,7 +12,7 @@ import com.vale.chat.repositories.NotificacionRepository;
 @SpringBootTest
 class BanckendChatApplicationTests {
 	
-	@Autowired
+	/*@Autowired
 	NotificacionRepository notificacionRepository;
 
 	@Test
@@ -20,6 +20,6 @@ class BanckendChatApplicationTests {
 		List< Notificacion > notis = notificacionRepository.findByUsername("VTORRES");
 		notis.forEach( System.out::println );	
 		
-	}
+	}*/
 
 }
